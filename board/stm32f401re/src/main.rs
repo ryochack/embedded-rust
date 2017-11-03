@@ -107,12 +107,22 @@ fn main() {
         (*rcc).ahb1enr.write(
             (*rcc).ahb1enr.read() | RCC_AHB1ENR_GPIOAEN,
         );
-        (*gpioa).moder.write((GpioModer::Output as u32) << (5 * 2));
-        (*gpioa).otyper.write((GpioTyper::PushPull as u32) << 5);
-        (*gpioa).ospeedr.write(
-            (GpioOspeedr::HighSpeed as u32) << (5 * 2),
+        (*gpioa).moder.write(
+            ((*gpioa).moder.read() & !((0b11 as u32) << (5 * 2))) |
+                ((GpioModer::Output as u32) << (5 * 2)),
         );
-        (*gpioa).pupdr.write((GpioPupdr::NoPuPd as u32) << (5 * 2));
+        (*gpioa).otyper.write(
+            ((*gpioa).otyper.read() & !((0b1 as u32) << 5)) |
+                ((GpioTyper::PushPull as u32) << 5),
+        );
+        (*gpioa).ospeedr.write(
+            ((*gpioa).ospeedr.read() & !((0b11 as u32) << (5 * 2))) |
+                ((GpioOspeedr::HighSpeed as u32) << (5 * 2)),
+        );
+        (*gpioa).pupdr.write(
+            ((*gpioa).pupdr.read() & !((0b11 as u32) << (5 * 2))) |
+                (GpioPupdr::NoPuPd as u32) << (5 * 2),
+        );
     }
 
     loop {
