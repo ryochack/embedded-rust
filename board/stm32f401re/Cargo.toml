@@ -1,0 +1,16 @@
+[package]
+authors = ["ryochack <ryochack@gmail.com>"]
+name = "stm32f401re"
+version = "0.1.0"
+
+[dependencies]
+cortex-m = "0.3.1"
+volatile-register = "0.2.0"
+
+[dependencies.cortex-m-rt]
+version = "0.3.6"
+features = ["abort-on-panic"]
+
+[profile.release]
+debug = true
+lto = true
