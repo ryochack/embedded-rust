@@ -7,7 +7,6 @@ pub const GPIOD_BASE: u32 = 0x4002_0C00;
 pub const GPIOE_BASE: u32 = 0x4002_1000;
 pub const GPIOH_BASE: u32 = 0x4002_1C00;
 
-#[allow(dead_code)]
 pub enum Moder {
     Input = 0b00,
     Output = 0b01,
@@ -15,13 +14,11 @@ pub enum Moder {
     Analog = 0b11,
 }
 
-#[allow(dead_code)]
 pub enum Typer {
     PushPull = 0b0,
     OpenDrain = 0b1,
 }
 
-#[allow(dead_code)]
 pub enum Ospeedr {
     Low = 0b00,
     Medium = 0b01,
@@ -29,7 +26,6 @@ pub enum Ospeedr {
     High = 0b11,
 }
 
-#[allow(dead_code)]
 pub enum Pupdr {
     NoPuPd = 0b00,
     PullUp = 0b01,
