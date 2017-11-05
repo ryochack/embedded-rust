@@ -11,18 +11,20 @@ fn main() {
     const PIN_A5: u32 = 1 << 5;
 
     unsafe {
-        (*rcc).ahb1enr.modify(|v| v | rcc::RCC_AHB1ENR_GPIOAEN);
+        (*rcc).ahb1enr.modify(
+            |v| v | rcc::ahb1enr::Gpioaen::Enable as u32,
+        );
         (*gpioa).moder.modify(|v| {
-            (v & !((0b11 as u32) << (5 * 2))) | ((gpio::Moder::Output as u32) << (5 * 2))
+            (v & !((0b11 as u32) << (5 * 2))) | ((gpio::moder::Modery::Output as u32) << (5 * 2))
         });
         (*gpioa).otyper.modify(|v| {
-            (v & !((0b1 as u32) << 5)) | ((gpio::Typer::PushPull as u32) << 5)
+            (v & !((0b1 as u32) << 5)) | ((gpio::otyper::Oty::PushPull as u32) << 5)
         });
         (*gpioa).ospeedr.modify(|v| {
-            (v & !((0b11 as u32) << (5 * 2))) | ((gpio::Ospeedr::High as u32) << (5 * 2))
+            (v & !((0b11 as u32) << (5 * 2))) | ((gpio::ospeedr::Ospeedr::High as u32) << (5 * 2))
         });
         (*gpioa).pupdr.modify(|v| {
-            (v & !((0b11 as u32) << (5 * 2))) | (gpio::Pupdr::NoPuPd as u32) << (5 * 2)
+            (v & !((0b11 as u32) << (5 * 2))) | (gpio::pupdr::Pupdr::NoPuPd as u32) << (5 * 2)
         });
     }
 

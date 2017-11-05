@@ -7,31 +7,6 @@ pub const GPIOD_BASE: u32 = 0x4002_0C00;
 pub const GPIOE_BASE: u32 = 0x4002_1000;
 pub const GPIOH_BASE: u32 = 0x4002_1C00;
 
-pub enum Moder {
-    Input = 0b00,
-    Output = 0b01,
-    Alternate = 0b10,
-    Analog = 0b11,
-}
-
-pub enum Typer {
-    PushPull = 0b0,
-    OpenDrain = 0b1,
-}
-
-pub enum Ospeedr {
-    Low = 0b00,
-    Medium = 0b01,
-    Fast = 0b10,
-    High = 0b11,
-}
-
-pub enum Pupdr {
-    NoPuPd = 0b00,
-    PullUp = 0b01,
-    PuuDown = 0b10,
-}
-
 #[repr(C)]
 pub struct RegisterMap {
     pub moder: RW<u32>,
@@ -44,4 +19,85 @@ pub struct RegisterMap {
     pub lckr: RW<u32>,
     pub afrl: RW<u32>,
     pub afrh: RW<u32>,
+}
+
+pub mod moder {
+    /// Port x configuration bits
+    pub enum Modery {
+        Input = 0b00,
+        Output = 0b01,
+        Alternate = 0b10,
+        Analog = 0b11,
+    }
+}
+
+pub mod otyper {
+    /// Port x configuration bits
+    pub enum Oty {
+        PushPull = 0b0,
+        OpenDrain = 0b1,
+    }
+}
+
+pub mod ospeedr {
+    /// Port x configuration bits
+    pub enum Ospeedr {
+        Low = 0b00,
+        Medium = 0b01,
+        Fast = 0b10,
+        High = 0b11,
+    }
+}
+
+pub mod pupdr {
+    /// Port x configuration bits
+    pub enum Pupdr {
+        NoPuPd = 0b00,
+        PullUp = 0b01,
+        PuuDown = 0b10,
+    }
+}
+
+pub mod afrl {
+    /// Alternate function selection for port x bit (0..7)
+    pub enum Afrly {
+        AF0 = 0b0000,
+        AF1 = 0b0001,
+        AF2 = 0b0010,
+        AF3 = 0b0011,
+        AF4 = 0b0100,
+        AF5 = 0b0101,
+        AF6 = 0b0110,
+        AF7 = 0b0111,
+        AF8 = 0b1000,
+        AF9 = 0b1001,
+        AF10 = 0b1010,
+        AF11 = 0b1011,
+        AF12 = 0b1100,
+        AF13 = 0b1101,
+        AF14 = 0b1110,
+        AF15 = 0b1111,
+    }
+}
+
+pub mod afrh {
+    /// Alternate function selection for port x bit (0..7)
+    pub enum Afrhy {
+        AF0 = 0b0000,
+        AF1 = 0b0001,
+        AF2 = 0b0010,
+        AF3 = 0b0011,
+        AF4 = 0b0100,
+        AF5 = 0b0101,
+        AF6 = 0b0110,
+        AF7 = 0b0111,
+        AF8 = 0b1000,
+        AF9 = 0b1001,
+        AF10 = 0b1010,
+        AF11 = 0b1011,
+        AF12 = 0b1100,
+        AF13 = 0b1101,
+        AF14 = 0b1110,
+        AF15 = 0b1111,
+    }
 }
