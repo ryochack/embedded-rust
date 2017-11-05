@@ -1,4 +1,3 @@
-//! Prints "Hello, world!" on the OpenOCD console using semihosting
 #![no_std]
 
 extern crate stm32f401re;
