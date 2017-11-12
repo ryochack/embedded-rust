@@ -10,6 +10,7 @@ pub struct RegisterMap {
 
 pub mod cr {
     /// Regulator voltage scalling output selection
+    pub const VOS_MASK: u32 = 0b11 << 14;
     pub enum Vos {
         Scale3Mode = 0b01 << 14,
         Scale2Mode = 0b10 << 14,

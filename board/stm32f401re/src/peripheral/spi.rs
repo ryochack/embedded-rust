@@ -243,6 +243,5 @@ pub mod i2spr {
         I2sDivX2 = 0b0 << 8,
         I2sDivX2P1 = 0b1 << 8,
     }
-    #[allow(dead_code)]
     pub const I2S_DIV_MASK: u32 = 0xFF;
 }

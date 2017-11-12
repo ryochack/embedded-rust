@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use volatile_register::RW;
 
 pub const RCC_BASE: u32 = 0x4002_3800;
@@ -52,6 +53,7 @@ pub mod cr {
         Locked = 0b1 << 25,
     }
     /// Main PLL enable
+    pub const PLLON_MASK: u32 = 0x1 << 24;
     pub enum Pllon {
         Off = 0b0 << 24,
         On = 0b1 << 24,
@@ -77,10 +79,9 @@ pub mod cr {
         On = 0b1 << 16,
     }
     /// Internal high-speed clock calibration
-    #[allow(dead_code)]
     pub const HSICAL_MASK: u32 = 0xFF << 8;
     /// Internal high-speed clock trimming
-    #[allow(dead_code)]
+    pub const HSITRIM_SHIFT: u32 = 3;
     pub const HSITRIM_MASK: u32 = 0x1F << 3;
     /// Internal high-speed clock ready flag
     pub enum Hsirdy {
@@ -95,11 +96,11 @@ pub mod cr {
 }
 
 pub mod pllcfgr {
-    #[allow(dead_code)]
     /// Main PLL division factor for USB OTG FS,
     /// SDIO and random number generator clocks
     pub const PLLQ_MASK: u32 = 0x0F00_0000;
     /// Main PLL and audio PLL(PLLI2S) entry clock source
+    pub const PLLSRC_MASK: u32 = 0b1 << 22;
     pub enum Pllsrc {
         HsiClock = 0b0 << 22,
         HseOscillatorClock = 0b1 << 22,
@@ -111,9 +112,9 @@ pub mod pllcfgr {
         _6 = 0b10 << 16,
         _8 = 0b11 << 16,
     }
-    #[allow(dead_code)]
     /// Main PLL multiplication factor for VCO
     pub const PLLN_MASK: u32 = 0x7FC0;
+    pub const PLLN_SHIFT: u32 = 6;
     /// Division factor for the main PLL and audio PLL(PLLI2S) input clock
     pub const PLLM_MASK: u32 = 0x3F;
 }
@@ -152,25 +153,30 @@ pub mod cfgr {
         HseOscillatorClock = 0b10 << 21,
         PllClock = 0b11 << 21,
     }
-    #[allow(dead_code)]
     /// HSE division factor for RTC clock
     pub const RTCPRE_MASK: u32 = 0x001F_0000;
     /// APB high-speed prescaler (APB2)
+    pub const PPRE2_MASK: u32 = 0b111 << 13;
     pub enum Ppre2 {
+        Div1 = 0b000 << 13,
         Div2 = 0b100 << 13,
         Div4 = 0b101 << 13,
         Div8 = 0b110 << 13,
         Div16 = 0b111 << 13,
     }
     /// APB Low speed prescaler (APB1)
+    pub const PPRE1_MASK: u32 = 0b111 << 10;
     pub enum Ppre1 {
+        Div1 = 0b000 << 10,
         Div2 = 0b100 << 10,
         Div4 = 0b101 << 10,
         Div8 = 0b110 << 10,
         Div16 = 0b111 << 10,
     }
     /// AHB prescaler
+    pub const HPRE_MASK: u32 = 0b1111 << 4;
     pub enum Hpre {
+        Div1 = 0b0000 << 4, // sytem clock not divided
         Div2 = 0b1000 << 4, // sytem clock divided by 2
         Div4 = 0b1001 << 4,
         Div8 = 0b1010 << 4,
@@ -181,6 +187,7 @@ pub mod cfgr {
         Div512 = 0b1111 << 4,
     }
     /// System clock switch status
+    pub const SWS_MASK: u32 = 0b11 << 2;
     pub enum Sws {
         HsiOscillator = 0b00 << 2, // used as system clock
         HseOscillator = 0b01 << 2,
@@ -188,6 +195,7 @@ pub mod cfgr {
         NotApplicable = 0b11 << 2,
     }
     /// System clock switch
+    pub const SW_MASK: u32 = 0b11 << 0;
     pub enum Sw {
         HsiOscillator = 0b00 << 0, // selected as system clock
         HseOscillator = 0b01 << 0,
@@ -244,8 +252,72 @@ pub mod ahb1enr {
     }
 }
 
+pub mod apb1enr {
+    /// Power interface clock enable
+    pub enum Pwren {
+        Disable = 0b0 << 28,
+        Enable = 0b1 << 28,
+    }
+    /// I2C3 clock enable
+    pub enum I2c3en {
+        Disable = 0b0 << 23,
+        Enable = 0b1 << 23,
+    }
+    /// I2C2 clock enable
+    pub enum I2c2en {
+        Disable = 0b0 << 22,
+        Enable = 0b1 << 22,
+    }
+    /// I2C1 clock enable
+    pub enum I2c1en {
+        Disable = 0b0 << 21,
+        Enable = 0b1 << 21,
+    }
+    /// USART2 clock enable
+    pub enum Usart2en {
+        Disable = 0b0 << 17,
+        Enable = 0b1 << 17,
+    }
+    /// SPI3 clock enable
+    pub enum Spi3en {
+        Disable = 0b0 << 15,
+        Enable = 0b1 << 15,
+    }
+    /// SPI2 clock enable
+    pub enum Spi2en {
+        Disable = 0b0 << 14,
+        Enable = 0b1 << 14,
+    }
+    /// Window watchdog clock enable
+    pub enum Wwdgen {
+        Disable = 0b0 << 11,
+        Enable = 0b1 << 11,
+    }
+    /// TIM5 clock enable
+    pub enum Tim5en {
+        Disable = 0b0 << 3,
+        Enable = 0b1 << 3,
+    }
+    /// TIM4 clock enable
+    pub enum Tim4en {
+        Disable = 0b0 << 2,
+        Enable = 0b1 << 2,
+    }
+    /// TIM3 clock enable
+    pub enum Tim3en {
+        Disable = 0b0 << 1,
+        Enable = 0b1 << 1,
+    }
+    /// TIM2 clock enable
+    pub enum Tim2en {
+        Disable = 0b0 << 0,
+        Enable = 0b1 << 0,
+    }
+}
+
 pub mod dckcfgr {
     /// Timers clocks prescalers selection
+    pub const TIMPRE_MASK: u32 = 0b1 << 24;
     pub enum Timpre {
         X2 = 0b0 << 24,
         X4 = 0b1 << 24,
